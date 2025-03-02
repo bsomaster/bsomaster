@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google OAuth Test 3</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta name="google-signin-client_id" content="87478016894-p1pdbiu2cbjlolkl0veolda452vknct4.apps.googleusercontent.com">
+</head>
+<body>
+  <div id="g_id_onload"
+       data-client_id="87478016894-p1pdbiu2cbjlolkl0veolda452vknct4.apps.googleusercontent.com"
+       data-callback="onSignIn">
+  </div>
+  <div class="g_id_signin" data-type="standard"></div>
+  <script>
+    function onSignIn(response) {
+      console.log('ID Token: ' + response.credential);
+      // Decodifique o token JWT para obter informações do usuário
+      const user = JSON.parse(atob(response.credential.split('.')[1]));
+      console.log('ID: ' + user.sub);
+      console.log('Name: ' + user.name);
+      console.log('Image URL: ' + user.picture);
+      console.log('Email: ' + user.email);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+button {
+
+    background-color: #00ff08;
+}
+
+button:hover {
+
+    box-shadow: 0px 0px 8px #00ff08;
+}
+
+.siteBtnMenu i {
+
+    color: #00ff08;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1020px){
+
+    .siteMenu .siteBtnClose i {
+
+        color: #00ff08;
+    }
+
+    .siteMenu nav a {
+
+        color: #00ff08;
+    }
+
+    .siteMenu nav a.selected {
+
+        background-color: #00ff08;
+    }
+
+    .siteMenu nav a:hover {
+
+        background-color: #00ff08;
+    }
+}
+
+/*//// Exclusivo da Página ////*/
+
+h2 {
+
+    color: #fff;
+    font-size: 38px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 span {
+
+    color: #00ff08;
+}
+
+.imageBox img {
+
+    max-height: 460px;
+    width: 460px;
+}
+
+/* -- Tipo Um -- */
+
+.typeOne {
+
+    padding: 40px 4%;
+}
+
+.typeOne .flex {
+
+    gap: 90px;
+    align-items: center;
+    justify-content: center;
+}
+
+.typeOne .textBox button i {
+
+    font-weight: bold;
+}
+
+.typeOne .textBox p {
+
+    color: #fff;
+    margin: 40px 0;
+}
+
+/* Sobre a pista do Evento */
+
+.sectionMap .circuitInfo {
+
+    flex-grow: 1;
+    color: #fff;
+
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sectionMap .circuitInfo div {
+
+    border-image: linear-gradient(to right, #ffffff00 0%, #00e007 20%, #00e007 80%, #ffffff00 100%) 1 100%;
+    border-image-slice: 1;
+    border-width: 3px 0;
+    border-style: solid;
+
+    display: flex;
+    font-size: 24px;
+    justify-content: center
+}
+
+.sectionMap .circuitInfo span {
+
+    color: #00ff08;
+    margin-right: 10px;
+}
+
+/* Sobre o carro do Evento */
+
+.sectionCar .imageBox {
+    
+    position: relative;
+}
+
+.sectionCar .imageBox .carClass {
+    
+    right: 0;
+    top: 0;
+    height: 40px;
+    display: flex;
+    position: absolute;
+    background-color: #00ff08;
+    border-radius: 10px;
+    outline: 3px solid #000000;
+    outline-offset: -6px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.sectionCar .imageBox .carClass span {
+    
+    height: 100%;
+    background-color: #000000;
+    border-radius: 10px 0 0 10px;
+    outline: 3px solid #00ff08;
+    outline-offset: -3px;
+
+    display: flex;
+    font-size: 22px;
+    padding: 0 15px;
+    color: #00ff08;
+    align-items: center;
+}
+
+.sectionCar .imageBox .carClass p {
+
+    height: 100%;
+    display: flex;
+    font-size: 22px;
+    align-items: center;
+    padding: 0 15px 0 5px;
+}
+
+/* Sobre as peças disponíveis */
+
+.sectionParts .flex {
+
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 0 8px #fff;
+}
+
+.sectionParts .vehiclePartBox {
+    
+    flex-grow: 1;
+    display: flex;
+    padding: 20px;
+    column-gap: 20px;
+    box-shadow: 0 0 8px #fff;
+}
+
+.sectionParts .vehiclePartBox img {
+
+    width: 100px;
+    border-radius: 20px;
+    box-shadow: 0 0 8px #fff;
+}
+
+.sectionParts .vehiclePartBox h3 {
+
+    font-size: 24px;
+    color: #00ff08;
+}
+
+.sectionParts .vehiclePartBox p {
+
+    color: #fff;
+}
+
+/* Sobre a Lista de inscrição */
+
+.sectionList .entryList {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    gap: 20px;
+}
+
+.sectionList .entryList div {
+
+    position: relative;
+    background-color: #007204;
+    border-radius: 5px;
+    height: 30px;
+    width: 90%;
+}
+
+.sectionList .entryList div span {
+
+    top: -10px;
+    left: -10px;
+    width: 35px;
+    height: 30px;
+   
+    display: flex;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #007204;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionList .entryList div p {
+
+    height: 100%;
+    padding-left: 40px;
+
+    display: flex;
+    color: #fff;
+    font-weight: bold;
+    align-items: center;
+}
+
+.sectionList .entryList div:nth-child(n+13) span {
+    
+    color: #CA0000;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1020px){
+
+    h2 {
+
+        font-size: 34px;
+        line-height: 35px;
+    }
+    
+    .imageBox img {
+
+        width: 100%;
+    }
+    
+    .typeOne .flex {
+
+        gap: 40px;
+        flex-direction: column-reverse;
+    }
+    
+    /* Sobre a pista do Evento */
+    
+    .sectionMap .circuitInfo {
+
+        width: 100%;
+        height: auto;
+        justify-content: center;
+    }
+    
+    .sectionMap .circuitInfo div {
+
+        flex-direction: column;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    /* Sobre o carro do Evento */
+
+    .sectionCar .imageBox .carClass {
+
+        top: auto;
+        bottom: -20px;
+    }
+
+    /* Sobre as peças disponíveis */
+    
+    .sectionParts {
+
+        padding: 40px 4%;
+    }
+
+    .sectionParts .flex {
+
+        gap: 10px;
+        display: grid;
+        overflow: visible;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .sectionParts .vehiclePartBox {
+
+        border-radius: 0;
+        transform: scale(1.0);
+        border-top: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+        box-shadow: 0 0 8px #ffffff6b;
+    }
+    
+    .sectionParts .vehiclePartBox h3 {
+
+        font-size: 20px;
+    }
+
+    /* Sobre a Fila de Inscrição */
+    
+    .sectionList .entryList {
+
+        width: 100%;
+    }
+}
