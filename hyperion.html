@@ -3,7 +3,8 @@
     
     <head>
         <meta charset="UTF-8">
-        <title>Forza Brasil</title>
+        <title>BsoMaster : Hyperion</title>
+        <link rel="icon" type="image/x-icon" href="img/favicon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Google Fonts -->
@@ -15,18 +16,27 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
         
         <!-- Main Style -->
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="hyperion.css">
-        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/hyperion.css">
+        <script src="js/script.js" defer></script>
+
+        <!-- Google Login -->
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
     
     <body>
 
+        <div id="g_id_onload"
+		   data-client_id="87478016894-p1pdbiu2cbjlolkl0veolda452vknct4.apps.googleusercontent.com"
+		   data-callback="onSignIn">
+		</div>
+        
         <header>
+            
             <div class="interface">
                 
                 <div class="logo">
-                    <img src="images/hyperion-logo.png" alt="Logo do site">
+                    <img src="img/hyperion-logo.png" alt="Logo do site">
                 </div>
                 
                 <div class="siteBtnMenu" id="siteBtnMenu">
@@ -35,53 +45,62 @@
 
                 <div class="siteMenu" id="siteMenu">
                     
-                    <div class="siteBtnClose">
-                        <i class="fa-solid fa-circle-xmark"></i>
-                    </div>
-                    
                     <nav>
                         <ul>
                             <li><a href="index.html">Inicio</a></li>
-                            <li><a href="forzabrasil.html">Forza Brasil</a></li>
+                            <li><a>Projetos</a></li>
                             <li><a class="selected">Hyperion</a></li>
-                            <li><a href="evec.html">EVE Cobras</a></li>
+                            <li><a>Contato</a></li>
                         </ul>
                     </nav>
 
+                    <div class="siteHeaderBtn">
+                        <div class="g_id_signin"
+                            data-type="button"
+                            data-shape="pill"
+                            data-theme="filled_black"
+                            data-text="signin"
+                            data-size="large"
+                            data-logo_alignment="left"
+                            data-width="200px">
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="siteBtnDiscord">
-                    <a href="https://discord.gg/Ks7W8umuds">
-                        <button class="flex"><p>Discord</p><i class="fa-brands fa-discord"></i></button>
-                    </a>
-                </div>
-
-                <div class="siteOverMenu"></div>
+                <div class="siteOverMenu" id="siteOverMenu"></div>
 
             </div>
         </header>
 
         <main>
+            </br>
             <section class="sectionOne">
                 <div class="interface">
                     <div class="flex">
                         <div class="sectionTxt">
-                            <h1>TRANSFORMANDO IDEIAS EM <span>REALIDADE DIGITAL</span>.</h1>
-                            <p>Criatividade e inovação andam lado a lado. Com uma combinação única de design impactante, funcionalidade intuitiva e otimização para resultados, estou pronto para criar a presença online dos seus sonhos.</p>
+                            
+							<h1>DESAFIO <span>HYPERION</span> NO <span>FORZA BRASIL</span>.</h1>
+                            
+							<p>Prepare-se para a emoção do evento "Hyperion" no servidor de Discord "Forza Brasil"!<br><br>
+    
+							Neste desafio exclusivo de Forza Horizon 5, os jogadores devem preparar seis carros selecionados pela organização, cada um em uma classe diferente. Serão seis corridas intensas, onde todos competem com o mesmo carro em cada prova, garantindo uma disputa justa e emocionante.<br><br>
 
-                            <a href="#">
-                                <button>Entre em contato</button>
-                            </a>
+							A pista personalizada "Hyperion Road One" foi projetada para testar suas habilidades ao máximo, com curvas desafiadoras e trajetos estreitos. Cada corrida será uma oportunidade única para mostrar sua destreza ao volante e estratégia de corrida.<br><br>
+
+							Junte-se a nós e mostre que você é o melhor piloto em Forza Horizon 5. Prepare seus carros, ajuste suas estratégias e venha conquistar a vitória neste evento épico!<br>
+
+							Está pronto para o desafio? Que comecem as corridas!</p>
                             
                         </div>
                         <div class="sectionFluctuate">
-                            <img src="images/hyperion.png" alt="">
+                            <img src="img/Hyperion-Banner.png" alt="">
                         </div>
                     </div>
                 </div>
             </section>
             
-            <section class="sectionTwo">
+            <!--section class="sectionTwo">
                 <div class="interface">
                     <h2>MINHAS <span>ESPECIALIDADES</span></h2>
                     <div class="flex">
@@ -102,7 +121,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section-->
         </main>
 
     </body>

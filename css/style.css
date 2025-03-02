@@ -1,0 +1,258 @@
+/* Estilo Geral */
+
+* {
+    
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    
+    background-color: #000;
+    height: 100vh;
+}
+
+.interface {
+
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.flex {
+
+    display: flex;
+}
+
+a {
+
+    cursor: pointer;
+    text-decoration: none;
+}
+
+header {
+
+    padding: 20px 4%;
+    background-color: #111;
+}
+
+header > .interface {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .logo img {
+
+    height: 100px;
+    max-width: 100px;
+}
+
+button {
+
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 0;
+}
+
+.siteHeaderBtn {
+
+	background-color: #f72549;
+	border-radius: 50vh;
+	padding: 4px;
+}
+
+.siteBtnClose {
+
+    display: none;
+}
+
+.siteMenu {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.siteMenu nav {
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+.siteMenu nav ul {
+    
+    list-style-type: none;
+}
+
+.siteMenu nav li {
+
+    display: inline-block;
+    padding: 0 40px;
+}
+
+.siteMenu nav a {
+
+    color: #5C5C5C;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s;
+}
+
+.siteMenu nav a.selected {
+
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.siteMenu nav a:hover {
+
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Menu Mobile */
+
+.siteBtnMenu {
+    
+    display: none;
+}
+
+.siteBtnMenu i {
+
+    color: #f72549;
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+.siteOverMenu {
+
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    
+    background-color: #000;
+    opacity: 0.7;
+    display: none;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1020px){
+    
+    /* Menu Header */
+    .siteHeaderBtn {
+
+        top: 10px;
+        width: 100%;
+        border-radius: 0px;
+        position: absolute;
+    }
+
+    header {
+
+        padding: 10px 4%;
+    }
+
+    header .logo {
+
+        height: 60px;
+    }
+
+    header .logo img {
+    
+        height: 60px;
+        max-width: 60px;
+    }
+
+    /* Menu Mobile */
+    .siteBtnMenu {
+    
+        display: block;
+    }
+
+    .siteMenu {
+
+        display: block;
+        background-color: #111;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        width: 0%;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+    .siteMenu.openMenu {
+
+        width: 80%;
+    }
+
+    .siteMenu.openMenu ~ .siteOverMenu {
+
+        display: block;
+    }
+
+    .siteMenu .siteBtnClose {
+
+        padding: 20px 5%;
+        display: block;
+    }
+
+    .siteMenu .siteBtnClose i {
+
+        color: #f72549;
+        font-size: 30px;
+    }
+
+    .siteMenu nav {
+
+        display: block;
+        margin-top: 110px;
+    }
+
+    .siteMenu nav ul {
+
+        text-align: right;
+    }
+
+    .siteMenu nav li {
+
+        display:block;
+        padding: 0;
+    }
+
+    .siteMenu nav a {
+
+        color: #f72549;
+        font-size: 20px;
+        font-weight: 300;
+        padding: 20px 8%;
+        display: block;
+        transition: 0s;
+        font-weight: bold;
+    }
+
+    .siteMenu nav a.selected {
+
+        background-color: #f72549;
+        transform: scale(1.0);
+        font-weight: bold;
+        color: #000;
+    }
+
+    .siteMenu nav a:hover {
+
+        color: #f72549;
+        transform: scale(1.0);
+    }
+}
