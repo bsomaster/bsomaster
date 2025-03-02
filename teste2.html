@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google OAuth Test 4</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Google Login -->
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <div id="g_id_onload" data-client_id="454933966604-hi300qd4ml6bholdnvrqa50ud98p2jvv.apps.googleusercontent.com" data-callback="onSignIn"></div>
+  <div class="g_id_signin" data-type="button" data-shape="pill" data-theme="filled_black" data-text="signin" data-size="large" data-logo_alignment="left" data-width="200px"></div>
+  
+  <script>
+    function onSignIn(response) {
+      console.log('ID Token: ' + response.credential);
+      // Decodifique o token JWT para obter informações do usuário
+      const user = JSON.parse(atob(response.credential.split('.')[1]));
+      console.log('ID: ' + user.sub);
+      console.log('Name: ' + user.name);
+      console.log('Image URL: ' + user.picture);
+      console.log('Email: ' + user.email);
+    }
+  </script>
+</body>
+</html>

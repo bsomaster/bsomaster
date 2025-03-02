@@ -1,0 +1,211 @@
+button {
+
+    background-color: #fff;
+}
+
+button:hover {
+
+    box-shadow: 0px 0px 8px #fff;
+}
+
+.siteBtnMenu i {
+
+    color: #fff;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1020px){
+
+    .siteMenu .siteBtnClose i {
+
+        color: #fff;
+    }
+
+    .siteMenu nav a {
+
+        color: #fff;
+    }
+
+    .siteMenu nav a.selected {
+
+        background-color: #fff;
+    }
+
+    .siteMenu nav a:hover {
+
+        background-color: #fff;
+    }
+}
+
+/*/ Exclusivo da Página /*/
+
+h1, h2 {
+
+    color: #fff;
+    font-size: 38px;
+}
+
+h1 span, h2 span {
+
+    color: #b8b8b8;
+}
+
+/* -- Seção Um -- */
+
+.sectionOne {
+
+    padding: 40px 4%;
+}
+
+.sectionOne .flex {
+
+    gap: 90px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sectionOne .sectionTxt h1 {
+
+    line-height: 40px;
+}
+
+.sectionOne .sectionTxt button i {
+
+    font-weight: bold;
+}
+
+.sectionOne .sectionTxt p {
+
+    color: #fff;
+    margin: 40px 0;
+}
+
+.sectionOne .sectionFluctuate img {
+
+    position: relative;
+    animation: flutuar 2s ease-in-out infinite alternate;
+    max-height: 460px;
+    width: 460px;
+}
+
+@keyframes flutuar {
+
+    0% {
+
+        top: 0;
+    }
+
+    100% {
+
+        top: 30px;
+    }
+}
+
+/* -- Seção Dois -- */
+
+.sectionTwo {
+
+    padding: 40px 4%;
+}
+
+.sectionTwo h2 {
+
+    text-align: center;
+}
+
+.sectionTwo .flex {
+
+    gap: 60px;
+}
+
+.sectionTwo .sectionBox {
+
+    color: #fff;
+    padding: 40px;
+    margin-top: 45px;
+    border-radius: 20px;
+    transition: .2s;
+}
+
+.sectionTwo .sectionBox a {
+
+    color: #fff;
+}
+
+.sectionTwo .sectionBox:hover {
+
+    transform: scale(1.05);
+    box-shadow: 0 0 8px #ffffff6b;
+}
+
+.sectionTwo .sectionBox i {
+
+    font-size: 70px;
+    color: #b8b8b8;
+}
+
+.sectionTwo .sectionBox h3 {
+
+    font-size: 28px;
+    margin: 15px 0;
+}
+
+/* Responsivo */
+@media screen and (max-width: 1020px){
+
+    .flex {
+
+        flex-direction: column;
+    }
+    
+    /* -- Seção Um -- */
+    section.sectionOne {
+
+        padding: 20px 8%;
+    }
+
+    section.sectionOne .flex {
+
+        gap: 40px;
+        flex-direction: column-reverse;
+    }
+    
+    .sectionOne h1 {
+
+        font-size: 30px;
+    }
+
+    .sectionOne .sectionFluctuate img {
+
+        width: 100%;
+    }
+
+    .sectionOne .sectionTxt a {
+
+        display: grid;
+        justify-content: center;
+    }
+
+    /* -- Seção Dois -- */
+    .sectionTwo {
+
+        padding: 40px 8%;
+    }
+
+    .sectionTwo h2 {
+
+        font-size: 34px;
+        line-height: 35px;
+    }
+
+    .sectionTwo .flex {
+
+        gap: 10px;
+    }
+
+    .sectionTwo .sectionBox {
+
+        transform: scale(1.05);
+        box-shadow: 0 0 8px #ffffff6b;
+    }
+}
