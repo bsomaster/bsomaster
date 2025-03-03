@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>BsoMaster : Hyperion</title>
+        <link rel="icon" type="image/x-icon" href="img/favicon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <!-- Extern Icons  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+        
+        <!-- Main Style -->
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/hyperion.css">
+        <script src="js/script.js" defer></script>
+
+        <!-- Google Login -->
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+    </head>
+    
+    <body>
+
+        <div id="g_id_onload"
+		   data-client_id="87478016894-p1pdbiu2cbjlolkl0veolda452vknct4.apps.googleusercontent.com"
+		   data-callback="onSignIn">
+		</div>
+        
+        <header>
+            
+            <div class="interface">
+                
+                <div class="logo">
+                    <img src="img/hyperion-logo.png" alt="Logo do site">
+                </div>
+                
+                <div class="siteBtnMenu" id="siteBtnMenu">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+
+                <div class="siteMenu" id="siteMenu">
+                    
+                    <nav>
+                        <ul>
+                            <li><a href=".">Inicio</a></li>
+                            <li><a>Projetos</a></li>
+                            <li><a class="selected">Hyperion</a></li>
+                            <li><a>Contato</a></li>
+                        </ul>
+                    </nav>
+
+                    <div class="siteHeaderBtn">
+                        <div class="g_id_signin"
+                            data-type="button"
+                            data-shape="pill"
+                            data-theme="filled_black"
+                            data-text="signin"
+                            data-size="large"
+                            data-logo_alignment="left"
+                            data-width="200px">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="siteOverMenu" id="siteOverMenu"></div>
+
+            </div>
+        </header>
+
+        <main>
+            </br>
+            <section class="sectionOne">
+                <div class="interface">
+                    <div class="flex">
+                        <div class="sectionTxt">
+                            
+							<h1>DESAFIO <span>HYPERION</span> NO <span>FORZA BRASIL</span>.</h1>
+                            
+							<p>Prepare-se para a emoção do evento "Hyperion" no servidor de Discord "Forza Brasil"!<br><br>
+    
+							Neste desafio exclusivo de Forza Horizon 5, os jogadores devem preparar seis carros selecionados pela organização, cada um em uma classe diferente. Serão seis corridas intensas, onde todos competem com o mesmo carro em cada prova, garantindo uma disputa justa e emocionante.<br><br>
+
+							A pista personalizada "Hyperion Road One" foi projetada para testar suas habilidades ao máximo, com curvas desafiadoras e trajetos estreitos. Cada corrida será uma oportunidade única para mostrar sua destreza ao volante e estratégia de corrida.<br><br>
+
+							Junte-se a nós e mostre que você é o melhor piloto em Forza Horizon 5. Prepare seus carros, ajuste suas estratégias e venha conquistar a vitória neste evento épico!<br>
+
+							Está pronto para o desafio? Que comecem as corridas!</p>
+                            
+                        </div>
+                        <div class="sectionFluctuate">
+                            <img src="img/Hyperion-Banner.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!--section class="sectionTwo">
+                <div class="interface">
+                    <h2>MINHAS <span>ESPECIALIDADES</span></h2>
+                    <div class="flex">
+                        <div class="sectionBox">
+                            <i class="fa-solid fa-code"></i>
+                            <h3>Website</h3>
+                            <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                        </div>
+                        <div class="sectionBox">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <h3>Loja Online</h3>
+                            <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                        </div>
+                        <div class="sectionBox">
+                            <i class="fa-brands fa-wordpress"></i>
+                            <h3>Wordpress</h3>
+                            <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                        </div>
+                    </div>
+                </div>
+            </section-->
+        </main>
+
+    </body>
+</html>

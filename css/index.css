@@ -36,9 +36,9 @@ main button {
     line-height: 40px;
 }
 
-.sectionOne .sectionTxt button i {
+.sectionOne .sectionTxt button {
 
-    font-weight: bold;
+    color: #ffd4db;
 }
 
 .sectionOne .sectionTxt p {

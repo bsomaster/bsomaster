@@ -63,6 +63,9 @@ button {
 	background-color: #f72549;
 	border-radius: 50vh;
 	padding: 4px;
+
+    display: flex;
+    justify-content: center;
 }
 
 .siteBtnClose {
