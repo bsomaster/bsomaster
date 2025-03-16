@@ -1,5 +1,11 @@
 .siteHeaderBtn {
 
+    border-color: #9421ff;
+    color: #9421ff;
+}
+
+.siteHeaderBtn:hover {
+
     background-color: #9421ff;
 }
 
@@ -13,7 +19,8 @@
 
     .siteHeaderBtn {
 
-        border-color: #9421ff;
+        color: #000000;
+        background-color: #9421ff;
     }
     
     .siteMenu .siteBtnClose i {
