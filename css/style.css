@@ -123,13 +123,13 @@ button {
 
 .siteMenu nav a.selected {
 
-    color: #fff;
+    color: #ffffff;
     transform: scale(1.1);
 }
 
 .siteMenu nav a:hover {
 
-    color: #fff;
+    color: #ffffff;
     transform: scale(1.1);
 }
 
@@ -275,5 +275,10 @@ button {
 
         color: #f72549;
         transform: scale(1.0);
+    }
+
+    .siteMenu nav a.selected:hover {
+
+        color: #000000;
     }
 }
