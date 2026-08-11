@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Detalhes do Item</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../../settings.js" defer></script>
+    <script src="../../calculator.js" defer></script>
+    <script src="../../catalog.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2>Print<span>System</span></h2>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/printsystem/" style="color: inherit; text-decoration: none;">Dashboard</a></li>
+                    <li class="active"><a href="/printsystem/meucatalogo/" style="color: inherit; text-decoration: none;">Meu Catálogo</a></li>
+                    <li><a href="/printsystem/vendas/" style="color: inherit; text-decoration: none;">Minhas Vendas</a></li>
+                    <li><a href="/printsystem/configuracoes/" style="color: inherit; text-decoration: none;">Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="btn-logout" class="btn-logout-header">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="interface">
+                <div class="card-header" style="margin-bottom: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <button class="btn-secondary" id="btn-back-to-catalog" style="height: 40px; padding: 0 1.5rem; font-size: 1.5rem" title="Voltar">◂</button>
+                        <h1 style="margin: 0;"><span id="detail-item-name">Item</span></h1>
+                    </div>
+                </div>
+
+                <div class="calc-container" id="detail-container" style="grid-template-columns: 1fr 450px;">
+                    <div class="inputs-column">
+                        <div class="card" style="padding: 1.5rem; background: var(--bg-card);">
+                            <div class="catalog-item-photo" style="width: 100%; height: auto; aspect-ratio: 16/9; margin-bottom: 1rem; border: 1px solid var(--border); background: #000;">
+                                <img id="detail-item-photo" src="" alt="Foto do Item" style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <div class="carousel-container">
+                                <button class="btn-carousel prev" onclick="catalog.changePhoto(-1)">&#10094;</button>
+                                <div id="detail-item-carousel" class="detail-carousel">
+                                    <!-- Miniaturas aqui -->
+                                </div>
+                                <button class="btn-carousel next" onclick="catalog.changePhoto(1)">&#10095;</button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Descrição do <span>Item</span></h3>
+                            <p id="detail-item-description" style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap;">Sem descrição disponível.</p>
+                        </div>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="card result-card" style="border-left-color: var(--accent-success);">
+                            <div class="result-header">
+                                <span>Preço Unitário</span>
+                                <strong id="detail-res-single" style="font-size: 2.5rem;">R$ 0,00</strong>
+                                <span id="detail-res-single-margin" class="percentage-badge" style="color: var(--accent-success);">Lucro: 0%</span>
+                            </div>
+                            <div class="result-details" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="detail-item" style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span style="color: var(--text-muted);">Lucro Real:</span>
+                                    <span id="detail-res-single-profit" style="font-weight: 700; color: var(--accent-success);">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card result-card retail" style="border-left-color: var(--accent-purple);">
+                            <div class="result-header">
+                                <span>Preço Atacado</span>
+                                <strong id="detail-res-retail" style="font-size: 2.5rem;">R$ 0,00</strong>
+                                <span id="detail-res-retail-margin" class="percentage-badge" style="color: var(--accent-purple);">Lucro: 0%</span>
+                            </div>
+                            <div class="result-details" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="detail-item" style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                    <span style="color: var(--text-muted);">Lucro Real:</span>
+                                    <span id="detail-res-retail-profit" style="font-weight: 700; color: var(--accent-purple);">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card result-card breakdown-card" style="border-left-color: var(--text-muted);">
+                            <h3 style="margin-bottom: 1.5rem;">Detalhamento de <span>Custos</span></h3>
+                            <div id="detail-res-costs-breakdown" class="breakdown-list">
+                                <!-- Dinamicamente preenchido -->
+                            </div>
+                            <div class="breakdown-total" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline;">
+                                <span style="font-weight: 600; text-transform: uppercase; font-size: 0.8rem; color: var(--text-muted);">Custo de Produção</span>
+                                <strong id="detail-res-total-cost" style="color: var(--primary);">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="card result-card" style="border-left-color: var(--text-muted); padding: 2rem; margin-bottom: 0;">
+                            <h3 style="margin-bottom: 1.5rem;">Informações <span>Técnicas</span></h3>
+                            <div class="breakdown-list">
+                                <div class="breakdown-item">
+                                    <span>Presset Utilizado</span>
+                                    <strong id="detail-item-profile" style="color: var(--primary);">Standard</strong>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Peso da Peça</span>
+                                    <strong id="detail-item-weight">0g</strong>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Tempo Estimado</span>
+                                    <strong id="detail-item-time">0h 0m</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" style="width: 100%;" id="btn-realizar-venda">Realizar Venda / Agendamento</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para Imagem Ampliada -->
+    <div id="image-viewer-modal" class="modal-overlay hidden" onclick="catalog.closeImageViewer()">
+        <div class="modal-content-full" onclick="event.stopPropagation()">
+            <button class="btn-close-viewer" onclick="catalog.closeImageViewer()">&times;</button>
+            <img id="enlarged-image" src="" alt="Imagem Ampliada">
+        </div>
+    </div>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+                await Promise.all([
+                    settings.init(),
+                    calculator.init(),
+                    catalog.init()
+                ]);
+            } catch (err) {
+                console.error("Erro na inicialização:", err);
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>
