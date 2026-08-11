@@ -60,12 +60,21 @@ const auth = {
 
                 // Validação de caracteres e tamanho
                 const regex = /^[a-zA-Z0-9]+$/;
+<<<<<<< HEAD
                 if (username.length < 5) {
                     this.updateUsernameStatus('Mínimo 5 caracteres', 'error');
                     return;
                 }
                 if (username.length > 10) {
                     this.updateUsernameStatus('Máximo 10 caracteres', 'error');
+=======
+                if (username.length < 3) {
+                    this.updateUsernameStatus('Mínimo 3 caracteres', 'error');
+                    return;
+                }
+                if (username.length > 15) {
+                    this.updateUsernameStatus('Máximo 15 caracteres', 'error');
+>>>>>>> 01c5fbfc5085a7ba0eecd728277f1cf8a69185eb
                     return;
                 }
                 if (!regex.test(username)) {

@@ -573,16 +573,35 @@ input[type=number] {
 }
 
 /* Login Page Override */
+<<<<<<< HEAD
 .plogin {
     background: var(--bg-main) !important;
 }
 
 .plogin .card {
+=======
+#page-login {
+    background: var(--bg-main) !important;
+}
+
+#page-login .card {
+>>>>>>> 01c5fbfc5085a7ba0eecd728277f1cf8a69185eb
     border: 3px solid var(--primary);
     box-shadow: 0 0 20px rgba(247, 37, 73, 0.1);
 }
 
+<<<<<<< HEAD
 .plogin .card span {
+=======
+#page-login h2 {
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#page-login h2::after {
+    content: '.';
+>>>>>>> 01c5fbfc5085a7ba0eecd728277f1cf8a69185eb
     color: var(--primary);
 }
 

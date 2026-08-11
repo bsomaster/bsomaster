@@ -179,7 +179,11 @@ const catalog = {
         if (btnRealizar) {
             btnRealizar.onclick = () => {
                 const id = new URLSearchParams(window.location.search).get('id');
+<<<<<<< HEAD
                 location.href = `/printsystem/vendas/nova/?id=${id}`;
+=======
+                location.href = `/vendas/nova/?id=${id}`;
+>>>>>>> 01c5fbfc5085a7ba0eecd728277f1cf8a69185eb
             };
         }
         this.setupCarouselDrag();
