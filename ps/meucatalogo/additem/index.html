@@ -1,3 +1,4 @@
+<<<<<<< HEAD:ps/meucatalogo/additem/index.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -140,3 +141,148 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Salvar Item</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../../settings.js" defer></script>
+    <script src="../../calculator.js" defer></script>
+    <script src="../../catalog.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2>Print<span>System</span></h2>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/printsystem/" style="color: inherit; text-decoration: none;">Dashboard</a></li>
+                    <li class="active"><a href="/printsystem/meucatalogo/" style="color: inherit; text-decoration: none;">Meu Catálogo</a></li>
+                    <li><a href="/printsystem/vendas/" style="color: inherit; text-decoration: none;">Minhas Vendas</a></li>
+                    <li><a href="/printsystem/configuracoes/" style="color: inherit; text-decoration: none;">Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="btn-logout" class="btn-logout-header">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+            <section id="page-save-item" class="page active">
+                <h1>Adicionar ao <span>Meu Catálogo</span></h1>
+                <div class="card save-item-grid">
+                    <div class="image-section">
+                        <div id="photo-preview-container" class="photo-preview-square">
+                            <img id="photo-preview-img" src="" class="hidden">
+                            <div id="photo-placeholder">
+                                <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M19,13H17V15H19V13M15,13H13V15H15V13M11,13H9V15H11V13M7,13H5V15H7V13M19,17H17V19H19V17M15,17H13V19H15V17M11,17H9V19H11V17M7,17H5V19H7V17M20,18V4H4V18H20M20,2H4A2,2 0 0,0 2,4V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V4A2,2 0 0,0 20,2Z" /></svg>
+                                <span>Sem Foto</span>
+                            </div>
+                            <button id="btn-edit-photo" class="btn-edit-photo hidden" title="Editar Foto">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                    <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div id="save-item-gallery" class="photo-gallery">
+                            <!-- Miniaturas das fotos enviadas -->
+                        </div>
+
+                        <input type="file" id="save-item-photo" accept="image/*" multiple style="display: none;">
+                        <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="document.getElementById('save-item-photo').click()">
+                            Adicionar Foto
+                        </button>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">A primeira foto será a principal</p>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="form-group">
+                            <label for="save-item-name">Nome do Item</label>
+                            <input type="text" id="save-item-name" placeholder="Ex: Estátua Batman">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="save-item-description">Descrição do Item</label>
+                            <textarea id="save-item-description" placeholder="Adicione detalhes sobre a peça, configurações especiais, etc..." style="width: 100%; height: 120px; background: var(--bg-input); border: 2px solid var(--border); border-radius: 10px; color: white; padding: 0.8rem 1.2rem; font-family: 'Poppins', sans-serif; resize: none;"></textarea>
+                        </div>
+
+                        <div class="price-display-container">
+                            <div class="price-display-item">
+                                <span class="price-label">Preço Unitário</span>
+                                <strong id="save-item-single-price-text">R$ 0,00</strong>
+                            </div>
+                            <div class="price-display-item">
+                                <span class="price-label">Preço Atacado</span>
+                                <strong id="save-item-retail-price-text">R$ 0,00</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions-section">
+                        <button class="btn-secondary" id="btn-cancel-save">Cancelar</button>
+                        <button class="btn-primary" id="btn-confirm-save">Salvar no Catálogo</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal do Cropper -->
+    <div id="cropper-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>Recortar <span>Foto</span></h2>
+            <div class="cropper-wrapper">
+                <img id="cropper-image" src="">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-cancel-crop">Cancelar</button>
+                <button class="btn-primary" id="btn-confirm-crop">Recortar e Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+                await Promise.all([
+                    settings.init(),
+                    calculator.init(),
+                    catalog.init()
+                ]);
+            } catch (err) {
+                console.error("Erro na inicialização:", err);
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>
+>>>>>>> 5e21ac9a8408cf132a049eb2730d818cf0f8132f:printsystem/meucatalogo/additem/index.html

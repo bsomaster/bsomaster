@@ -1,3 +1,4 @@
+<<<<<<< HEAD:ps/vendas/item/index.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -284,3 +285,284 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Detalhes da Venda</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../../settings.js" defer></script>
+    <script src="./details.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2 onclick="location.href='/printsystem/'" style="cursor: pointer;">Print<span>System</span></h2>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/printsystem/" style="color: inherit; text-decoration: none;">Dashboard</a></li>
+                    <li><a href="/printsystem/meucatalogo/" style="color: inherit; text-decoration: none;">Meu Catálogo</a></li>
+                    <li><a href="/printsystem/vendas/" style="color: inherit; text-decoration: none;">Minhas Vendas</a></li>
+                    <li><a href="/printsystem/configuracoes/" style="color: inherit; text-decoration: none;">Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="btn-logout" class="btn-logout-header">
+                    <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="card-header" style="margin-bottom: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn-secondary" id="btn-back" style="height: 40px; padding: 0 1.5rem; font-size: 1.5rem" title="Voltar">◂</button>
+                    <h1 style="margin: 0;">Detalhes da <span>Venda</span></h1>
+                </div>
+                <div id="detail-status-badge" class="status-badge">Carregando...</div>
+            </div>
+
+            <div class="sale-details-layout">
+                <!-- Coluna Principal (Informações) -->
+                <div class="sale-main-content">
+                    <section class="detail-section card">
+                        <h3>Informações do Item</h3>
+                        <div class="info-list">
+                            <div class="info-item">
+                                <span>Produto</span>
+                                <strong id="detail-product-name">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Data</span>
+                                <strong id="detail-date">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Hora</span>
+                                <strong id="detail-time">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Tipo</span>
+                                <strong id="detail-pricing-type">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Quantidade</span>
+                                <strong id="detail-quantity">-</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="detail-section card">
+                        <h3>Dados do Comprador</h3>
+                        <div id="detail-buyer-info-list" class="info-list">
+                            <!-- Buyer info items -->
+                        </div>
+                    </section>
+
+                    <div class="details-grid-secondary">
+                        <section class="detail-section card">
+                            <h3>Custos Adicionais</h3>
+                            <div id="detail-extra-costs-list" class="mini-list">
+                                <!-- Extra costs -->
+                            </div>
+                        </section>
+
+                        <section class="detail-section card">
+                            <h3>Descontos Aplicados</h3>
+                            <div id="detail-discounts-list" class="mini-list">
+                                <!-- Discounts -->
+                            </div>
+                        </section>
+                    </div>
+
+                    <section id="detail-cancel-section" class="detail-section card hidden" style="border-left: 5px solid var(--accent-danger);">
+                        <h3 style="color: var(--accent-danger);">Detalhes do <span>Cancelamento</span></h3>
+                        <div class="info-list">
+                            <div class="info-item" style="flex-direction: column; gap: 0.4rem; align-items: flex-start; border-bottom: 1px dashed var(--border); padding-bottom: 1rem; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Motivo do Cancelamento</span>
+                                <strong id="detail-cancel-reason" style="color: var(--text-main); text-align: left; font-weight: 500; font-size: 1rem;">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Custos Extras de Cancelamento</span>
+                                <strong id="detail-cancel-total-cost" style="color: var(--accent-danger);">R$ 0,00</strong>
+                            </div>
+                        </div>
+                        <div id="detail-cancel-costs-breakdown" class="mini-list" style="margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                            <!-- Breakdown de custos de cancelamento -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Coluna Lateral (Resumo Financeiro) -->
+                <aside class="sale-sidebar">
+                    <section class="detail-section card">
+                        <h3>Resumo Financeiro</h3>
+                        <div class="financial-grid-v2" style="grid-template-columns: 1fr; gap: 0.4rem;">
+                            <div class="financial-item highlight">
+                                <span>Valor Cobrado</span>
+                                <strong id="detail-total-value">R$ 0,00</strong>
+                            </div>
+                            <div class="financial-item highlight" style="border-color: var(--accent-success);">
+                                <span>Lucro Real</span>
+                                <strong id="detail-real-profit" style="color: var(--accent-success);">R$ 0,00</strong>
+                            </div>
+                            <div class="financial-item">
+                                <span>Preço Base (un)</span>
+                                <strong id="detail-base-price">R$ 0,00</strong>
+                            </div>
+                            <div class="financial-item">
+                                <span>Custo Produção</span>
+                                <strong id="detail-production-cost">R$ 0,00</strong>
+                            </div>
+                            <div class="financial-item">
+                                <span>Margem Base</span>
+                                <strong id="detail-base-margin">0%</strong>
+                            </div>
+                            <div class="financial-item">
+                                <span>Margem Final</span>
+                                <strong id="detail-final-margin">0%</strong>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+
+            <!-- Card de Cancelamento (inicialmente oculto) -->
+            <div id="cancel-sale-card" class="card hidden" style="margin-top: 1rem; border-left: 5px solid var(--accent-danger); animation: slideUp 0.3s ease-out;">
+                <h3 style="color: var(--accent-danger); margin-bottom: 1rem;">Cancelar <span>Venda</span></h3>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="cancel-reason">Motivo do Cancelamento</label>
+                    <textarea id="cancel-reason" placeholder="Ex: Cliente desistiu, erro na produção..." style="width: 100%; min-height: 80px; padding: 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-main); font-family: inherit; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Custos Adicionais de Cancelamento</h4>
+                    <div class="inline-add" style="margin-top: 0.75rem; padding-top: 0;">
+                        <div class="form-group" style="padding-top: 0.75rem">
+                            <label>Descrição</label>
+                            <input type="text" id="cancel-cost-desc" placeholder="Ex: Frete de devolução">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="text" inputmode="decimal" id="cancel-cost-val" class="money-input" placeholder="0.00">
+                        </div>
+                        <button class="btn-primary" id="btn-add-cancel-cost" style="padding: 0 1.5rem; font-size: 1.5rem;">+</button>
+                    </div>
+                    <div id="cancel-costs-list" class="settings-list vendas-nova-list" style="margin-top: 0.75rem;">
+                        <!-- Lista de custos adicionais -->
+                    </div>
+                    <div style="margin-top: 0.75rem; text-align: right; font-weight: 700; font-size: 1.2rem; color: var(--accent-danger);">
+                        Total: <span id="cancel-costs-total">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <button class="btn-secondary" id="btn-abort-cancel">Voltar</button>
+                    <button class="btn-danger" id="btn-confirm-cancel-sale">Confirmar Cancelamento</button>
+                </div>
+            </div>
+
+            <!-- Card de Confirmação de Venda (inicialmente oculto) -->
+            <div id="confirm-sale-card" class="card hidden" style="margin-top: 1rem; border-left: 5px solid var(--accent-success); animation: slideUp 0.3s ease-out;">
+                <h3 style="color: var(--accent-success); margin-bottom: 1rem;">Confirmar <span>Venda</span></h3>
+                <p class="text-muted" style="margin-bottom: 1.5rem;">Revise e ajuste os custos e descontos antes de finalizar a venda.</p>
+
+                <!-- Custos Adicionais na Confirmação -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Custos Adicionais</h4>
+                    <div class="inline-add" style="margin-top: 0.75rem; padding-top: 0;">
+                        <div class="form-group" style="padding-top: 0.75rem">
+                            <label>Descrição</label>
+                            <input type="text" id="confirm-cost-desc" placeholder="Ex: Embalagem especial">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="text" inputmode="decimal" id="confirm-cost-val" class="money-input" placeholder="0.00">
+                        </div>
+                        <button class="btn-primary" id="btn-add-confirm-cost" style="padding: 0 1.5rem;">+</button>
+                    </div>
+                    <div id="confirm-costs-list" class="settings-list vendas-nova-list" style="margin-top: 0.75rem;">
+                        <!-- Lista de custos -->
+                    </div>
+                </div>
+
+                <!-- Descontos na Confirmação -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Descontos Aplicados</h4>
+                    <div class="inline-add" style="margin-top: 0.75rem; padding-top: 0;">
+                        <div class="form-group" style="padding-top: 0.75rem">
+                            <label>Descrição</label>
+                            <input type="text" id="confirm-discount-desc" placeholder="Ex: Desconto fidelidade">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="text" inputmode="decimal" id="confirm-discount-val" class="money-input" placeholder="0.00">
+                        </div>
+                        <button class="btn-primary" id="btn-add-confirm-discount" style="padding: 0 1.5rem;">+</button>
+                    </div>
+                    <div id="confirm-discounts-list" class="settings-list vendas-nova-list" style="margin-top: 0.75rem;">
+                        <!-- Lista de descontos -->
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <div style="text-align: left;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Valor Cobrado</div>
+                        <div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);" id="confirm-total-final">R$ 0,00</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Lucro Real</div>
+                        <div style="font-size: 1.3rem; font-weight: 700; color: var(--accent-success);" id="confirm-lucro-real">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <button class="btn-secondary" id="btn-abort-confirm">Voltar</button>
+                    <button class="btn-primary" id="btn-confirm-final-sale">Finalizar Venda</button>
+                </div>
+            </div>
+
+            <div class="actions-footer" id="detail-actions" style="margin-top: 1rem; padding-top: 1rem;">
+                <!-- Botões dinâmicos -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+                await Promise.all([
+                    settings.init(),
+                    vendasItem.init()
+                ]);
+            } catch (err) {
+                console.error("Erro na inicialização:", err);
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>
+>>>>>>> 5e21ac9a8408cf132a049eb2730d818cf0f8132f:printsystem/vendas/item/index.html

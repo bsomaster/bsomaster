@@ -1,3 +1,4 @@
+<<<<<<< HEAD:ps/user/item/index.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -228,3 +229,232 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Detalhes do Item</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2>Print<span>System</span></h2>
+            </div>
+            <div id="user-header-info" style="font-weight: 600; text-transform: uppercase; color: var(--text-muted);">
+                Produto de <span id="display-username" style="color: var(--primary);">...</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" id="btn-back" style="padding: 0.5rem 1.5rem;">Abrir Catálogo</button>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="interface">
+                <div class="card-header" style="margin-bottom: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+
+                        <h1 style="margin: 0;"><span id="item-name">Item</span></h1>
+                    </div>
+                </div>
+
+                <div class="calc-container" style="grid-template-columns: 1fr 450px;">
+                    <div class="inputs-column">
+                        <div class="card" style="padding: 1.5rem; background: var(--bg-card);">
+                            <div class="catalog-item-photo" style="width: 100%; height: auto; aspect-ratio: 16/9; margin-bottom: 1rem; border: 1px solid var(--border); background: #000;">
+                                <img id="item-photo" src="" alt="Foto do Item" style="width: 100%; height: 100%; object-fit: contain; cursor: zoom-in;">
+                            </div>
+                            <div class="carousel-container">
+                                <button class="btn-carousel prev" onclick="itemDetail.changePhoto(-1)">&#10094;</button>
+                                <div id="item-carousel" class="detail-carousel">
+                                    <!-- Miniaturas aqui -->
+                                </div>
+                                <button class="btn-carousel next" onclick="itemDetail.changePhoto(1)">&#10095;</button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Descrição</h3>
+                            <p id="item-description" style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap;"></p>
+                        </div>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="card result-card" style="border-left-color: var(--accent-success); padding: 2.5rem;">
+                            <div class="result-header">
+                                <span>Preço Unitário</span>
+                                <strong id="price-single" style="font-size: 3rem;">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="card result-card retail" style="border-left-color: var(--accent-purple); padding: 2.5rem;">
+                            <div class="result-header">
+                                <span>Preço Atacado</span>
+                                <strong id="price-wholesale" style="font-size: 3rem;">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="card" style="background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--accent-success); padding: 1.5rem; text-align: center;">
+                            <p style="font-size: 0.85rem; color: var(--accent-success); font-weight: 600;">Interessado neste item? Entre em contato com o vendedor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para Imagem Ampliada -->
+    <div id="image-viewer-modal" class="modal-overlay hidden" onclick="itemDetail.closeImageViewer()">
+        <div class="modal-content-full" onclick="event.stopPropagation()">
+            <button class="btn-close-viewer" onclick="itemDetail.closeImageViewer()">&times;</button>
+            <img id="enlarged-image" src="" alt="Imagem Ampliada">
+        </div>
+    </div>
+
+    <script>
+        const itemDetail = {
+            photos: [],
+            currentIndex: 0,
+
+            async init() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const id = params.get('id');
+                    const username = params.get('u');
+
+                    document.getElementById('btn-back').onclick = () => location.href = `/printsystem/user/?u=${username}`;
+                    document.getElementById('display-username').innerText = username;
+
+                    if (!id) return;
+
+                    const { data: item, error } = await window.supabase
+                        .from('catalog')
+                        .select('*')
+                        .eq('id', id)
+                        .eq('is_public', true)
+                        .single();
+
+                    if (error || !item) {
+                        window.utils.showAlert({
+                            title: 'Não encontrado',
+                            message: 'O item solicitado não está disponível ou é privado.',
+                            onConfirm: () => location.href = `/printsystem/user/?u=${username}`
+                        });
+                        return;
+                    }
+
+                    this.render(item);
+                    this.setupCarouselDrag();
+                } finally {
+                    const loader = document.getElementById('loading-screen');
+                    if (loader) loader.classList.add('fade-out');
+                }
+            },
+
+            render(item) {
+                document.getElementById('item-name').innerText = item.name;
+                document.getElementById('item-description').innerText = item.description || 'Sem descrição.';
+                document.getElementById('price-single').innerText = `R$ ${parseFloat(item.unit_price || 0).toFixed(2)}`;
+                document.getElementById('price-wholesale').innerText = `R$ ${parseFloat(item.wholesale_price || 0).toFixed(2)}`;
+
+                this.photos = item.photos || [];
+                if (this.photos.length > 0) {
+                    this.updateUI();
+                    const carousel = document.getElementById('item-carousel');
+                    carousel.innerHTML = this.photos.map((p, i) => `
+                        <div class="carousel-thumb" data-index="${i}" onclick="itemDetail.selectPhoto(${i})">
+                            <img src="${p}" draggable="false">
+                        </div>
+                    `).join('');
+                }
+
+                document.getElementById('item-photo').onclick = () => this.openImageViewer();
+            },
+
+            selectPhoto(index) {
+                this.currentIndex = index;
+                this.updateUI();
+            },
+
+            changePhoto(delta) {
+                if (this.photos.length === 0) return;
+                this.currentIndex += delta;
+                if (this.currentIndex < 0) this.currentIndex = this.photos.length - 1;
+                if (this.currentIndex >= this.photos.length) this.currentIndex = 0;
+                this.updateUI();
+            },
+
+            updateUI() {
+                const photoSrc = this.photos[this.currentIndex];
+                const mainPhotoImg = document.getElementById('item-photo');
+                if (mainPhotoImg) mainPhotoImg.src = photoSrc;
+
+                const thumbs = document.querySelectorAll('.carousel-thumb');
+                thumbs.forEach((t, idx) => {
+                    if (idx === this.currentIndex) {
+                        t.classList.add('active');
+                        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+            },
+
+            openImageViewer() {
+                const photoSrc = this.photos[this.currentIndex];
+                if (!photoSrc) return;
+                const modal = document.getElementById('image-viewer-modal');
+                const enlargedImg = document.getElementById('enlarged-image');
+                enlargedImg.src = photoSrc;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            },
+
+            closeImageViewer() {
+                const modal = document.getElementById('image-viewer-modal');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            },
+
+            setupCarouselDrag() {
+                const carousel = document.getElementById('item-carousel');
+                if (!carousel) return;
+                let isDown = false, startX, scrollLeft;
+                carousel.onmousedown = (e) => {
+                    isDown = true;
+                    carousel.classList.add('dragging');
+                    startX = e.pageX - carousel.offsetLeft;
+                    scrollLeft = carousel.scrollLeft;
+                };
+                carousel.onmouseleave = () => { isDown = false; carousel.classList.remove('dragging'); };
+                carousel.onmouseup = () => { isDown = false; carousel.classList.remove('dragging'); };
+                carousel.onmousemove = (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - carousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    carousel.scrollLeft = scrollLeft - walk;
+                };
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => itemDetail.init());
+    </script>
+</body>
+</html>
+>>>>>>> 5e21ac9a8408cf132a049eb2730d818cf0f8132f:printsystem/user/item/index.html
