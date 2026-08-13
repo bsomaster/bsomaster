@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Nova Venda</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../../settings.js" defer></script>
+    <script src="../../calculator.js" defer></script>
+    <script src="../../catalog.js" defer></script>
+    <script src="../../vendas_nova.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2>Print<span>System</span></h2>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/ps/dashboard/">Dashboard</a></li>
+                    <li><a href="/ps/meucatalogo/">Meu Catálogo</a></li>
+                    <li class="active"><a href="/ps/vendas/">Minhas Vendas</a></li>
+                    <li><a href="/ps/configuracoes/">Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu-container">
+                    <button id="btn-user-menu" class="btn-primary">
+                        <span>Carregando...</span>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown">
+                        <ul>
+                            <li><a href="/ps/meuperfil/">Perfil</a></li>
+                            <li><button id="btn-logout">Sair</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="interface">
+                <div class="card-header" style="margin-bottom: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <button class="btn-secondary" id="btn-back" style="height: 40px; padding: 0 1.5rem; font-size: 1.5rem" title="Voltar">◂</button>
+                        <h1 style="margin: 0;">Nova <span>Venda</span></h1>
+                    </div>
+                </div>
+
+                <div class="calc-container" style="grid-template-columns: 1fr 400px;">
+                    <div class="inputs-column">
+                        <div class="card">
+                            <h3>Informações do <span>Item</span></h3>
+                            <div style="display: flex; gap: 1.5rem; align-items: center;">
+                                <div id="item-photo-container" style="width: 100px; height: 100px; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--border);">
+                                    <img id="item-photo" src="" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div>
+                                    <h2 id="item-name" style="margin: 0; font-size: 1.4rem;">Nome do Item</h2>
+                                    <p id="item-prices-info" style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Configuração da <span>Venda</span></h3>
+                            <div class="row">
+                                <div class="form-group" style="position: relative;">
+                                    <label>Tipo de Venda</label>
+                                    <input type="text" id="sale-type-display" readonly placeholder="Selecione o tipo..." style="cursor: pointer;">
+                                    <input type="hidden" id="sale-type" value="unitaria">
+                                    <div id="sale-type-dropdown" class="search-results-dropdown hidden">
+                                        <div class="search-result-item" onclick="vendasNova.selectSaleType('unitaria', 'Unitária')">
+                                            <span>Unitária</span>
+                                        </div>
+                                        <div class="search-result-item" onclick="vendasNova.selectSaleType('atacado', 'Atacado')">
+                                            <span>Atacado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="qty-group">
+                                    <label>Quantidade</label>
+                                    <input type="number" id="sale-qty" value="1" min="1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label id="date-label">Data da Venda / Agendamento</label>
+                                    <div class="custom-picker-trigger" id="date-picker-trigger">
+                                        <span id="display-date">00/00/0000</span>
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/></svg>
+                                    </div>
+                                    <input type="hidden" id="sale-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Horário</label>
+                                    <div class="custom-picker-trigger" id="time-picker-trigger">
+                                        <span id="display-time">00:00</span>
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.53 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg>
+                                    </div>
+                                    <input type="hidden" id="sale-time">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Informações do <span>Comprador</span></h3>
+                            <div class="form-group" style="margin-bottom: 2rem;">
+                                <label>Nome do Comprador *</label>
+                                <input type="text" id="buyer-name" placeholder="Nome completo ou identificação">
+                            </div>
+
+                            <h4 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">Outras Informações (Opcional)</h4>
+                            <div class="inline-add" style="margin-top: 2px">
+                                <div class="form-group">
+                                    <label>Título</label>
+                                    <input type="text" id="add-buyer-info-title" placeholder="Ex: Telefone">
+                                </div>
+                                <div class="form-group">
+                                    <label>Informação</label>
+                                    <input type="text" id="add-buyer-info-value" placeholder="Ex: (11) 99999-9999">
+                                </div>
+                                <button class="btn-icon" id="btn-add-buyer-info" style="padding: 0 1.5rem;">+</button>
+                            </div>
+                            <div id="buyer-info-list" class="settings-list vendas-nova-list" style="margin-top: 1.5rem;">
+                                <!-- Lista de informações extras -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Custos <span>Adicionais</span></h3>
+                            <div class="inline-add">
+                                <div class="form-group">
+                                    <label>Descrição</label>
+                                    <input type="text" id="add-cost-desc" placeholder="Ex: Frete">
+                                </div>
+                                <div class="form-group">
+                                    <label>Valor (R$)</label>
+                                    <input type="text" inputmode="decimal" id="add-cost-value" class="money-input" placeholder="0.00">
+                                </div>
+                                <button class="btn-icon" id="btn-add-cost" style="padding: 0 1.5rem;">+</button>
+                            </div>
+                            <div id="additional-costs-list" class="settings-list vendas-nova-list" style="margin-top: 1.5rem;">
+                                <!-- Lista de custos adicionais -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Descontos</h3>
+                            <div class="inline-add">
+                                <div class="form-group">
+                                    <label>Descrição</label>
+                                    <input type="text" id="add-discount-desc" placeholder="Ex: Cupom">
+                                </div>
+                                <div class="form-group">
+                                    <label>Valor (R$)</label>
+                                    <input type="text" inputmode="decimal" id="add-discount-value" class="money-input" placeholder="0.00">
+                                </div>
+                                <button class="btn-icon" id="btn-add-discount" style="padding: 0 1.5rem;">+</button>
+                            </div>
+                            <div id="discounts-list" class="settings-list vendas-nova-list" style="margin-top: 1.5rem;">
+                                <!-- Lista de descontos -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="card result-card" style="border-left-color: var(--primary);">
+                            <div class="result-header">
+                                <span>Total da Venda</span>
+                                <strong id="res-final-price">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="card result-card" style="border-left-color: var(--accent-success);">
+                            <div class="result-header">
+                                <span>Lucro Real</span>
+                                <strong id="res-final-profit">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="card result-card breakdown-card" style="border-left-color: var(--text-muted);">
+                            <h3>Resumo Financeiro</h3>
+                            <div class="breakdown-list">
+                                <div class="breakdown-item">
+                                    <span>Preço Base (<span id="summary-type">Unitário</span>)</span>
+                                    <strong id="summary-base-price">R$ 0,00</strong>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Custo de Produção Total</span>
+                                    <strong id="summary-total-cost">R$ 0,00</strong>
+                                </div>
+                                <div id="summary-extra-costs"></div>
+                                <div id="summary-extra-discounts"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <button id="btn-confirm-concluida" class="btn-primary" style="width: 100%;">Finalizar Venda</button>
+                            <button id="btn-confirm-agendada" class="btn-secondary" style="width: 100%;">Agendar Venda</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+                await Promise.all([
+                    settings.init(),
+                    calculator.init(),
+                    catalog.init(),
+                    vendasNova.init()
+                ]);
+            } catch (err) {
+                console.error("Erro na inicialização:", err);
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>

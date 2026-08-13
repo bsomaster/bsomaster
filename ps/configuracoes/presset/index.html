@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Configurar Presset</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../../calculator.js" defer></script>
+    <script src="../../settings.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <header class="top-bar">
+            <div class="header-logo">
+                <h2>Print<span>System</span></h2>
+            </div>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="/ps/dashboard/">Dashboard</a></li>
+                    <li><a href="/ps/meucatalogo/">Meu Catálogo</a></li>
+                    <li><a href="/ps/vendas/">Minhas Vendas</a></li>
+                    <li class="active"><a href="/ps/configuracoes/">Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu-container">
+                    <button id="btn-user-menu" class="btn-primary">
+                        <span>Carregando...</span>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown">
+                        <ul>
+                            <li><a href="/ps/meuperfil/">Perfil</a></li>
+                            <li><button id="btn-logout">Sair</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <section id="page-profile-edit" class="page active">
+                <h1 id="profile-modal-title">Configurar <span>Presset</span></h1>
+
+                <div class="card">
+                    <input type="hidden" id="edit-profile-id">
+
+                    <div class="form-group">
+                        <label>Nome do Presset</label>
+                        <input type="text" id="edit-profile-name" placeholder="Ex: ABS - Alta Resolução">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Lucro Venda Unitária (%)</label>
+                            <input type="number" id="edit-profile-sale">
+                        </div>
+                        <div class="form-group">
+                            <label>Lucro Venda Atacado (%)</label>
+                            <input type="number" id="edit-profile-retail">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Material / Kg (R$)</label>
+                            <input type="text" inputmode="decimal" id="edit-profile-material" class="money-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Mão de Obra / Hora (R$)</label>
+                            <input type="text" inputmode="decimal" id="edit-profile-labor" class="money-input" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Energia / Hora (R$)</label>
+                            <input type="text" inputmode="decimal" id="edit-profile-energy" class="money-input" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Manutenção / Hora (R$)</label>
+                            <input type="text" inputmode="decimal" id="edit-profile-maint" class="money-input" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="custom-fields-section">
+                        <h4>Campos Adicionais do Presset</h4>
+                        <div id="custom-fields-list"></div>
+                        <div class="inline-add">
+                            <div class="form-group">
+                                <label>Nome do Campo</label>
+                                <input type="text" id="new-custom-name" placeholder="Ex: Depreciação">
+                            </div>
+                            <div class="form-group">
+                                <label>Valor (R$)</label>
+                                <input type="text" inputmode="decimal" id="new-custom-value" class="money-input" placeholder="0.00">
+                            </div>
+                            <div class="form-group" style="position: relative;">
+                                <label>Tipo</label>
+                                <input type="text" id="new-custom-type-display" readonly value="Por Hora" style="cursor: pointer;" autocomplete="off">
+                                <input type="hidden" id="new-custom-type" value="hour">
+                                <div id="custom-type-results" class="search-results-dropdown hidden">
+                                    <div class="search-result-item" onclick="settings.selectCustomType('hour', 'Por Hora')">
+                                        <span>Por Hora</span>
+                                    </div>
+                                    <div class="search-result-item" onclick="settings.selectCustomType('kg', 'Por Peso')">
+                                        <span>Por Peso</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="btn-add-custom-field" style="padding: 0 1.5rem;">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="actions-section" style="margin-top: 2rem;">
+                        <button class="btn-secondary" id="btn-close-profile">Cancelar</button>
+                        <button class="btn-primary" id="btn-save-profile">Salvar Presset</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+                await calculator.init();
+                await settings.init();
+            } catch (err) {
+                console.error("Erro na inicialização:", err);
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>

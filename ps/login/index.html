@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintSystem - Login</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase.js" defer></script>
+    <script src="../auth.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-logo">Print<span>System</span></div>
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+    <section id="page-login" class="plg page full-screen active ">
+        <div class="card" style="width: 100%; max-width: 500px; padding: 3rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Print<span>System</span></h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="login-email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; height: 55px; font-size: 1rem;">Entrar</button>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                    Não tem uma conta? <a href="#" id="link-show-register" style="color: var(--primary); font-weight: 700;">CADASTRE-SE</a>
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <section id="page-register" class="plg page full-screen">
+        <div class="card" style="width: 100%; max-width: 500px; padding: 3rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Criar <span>Conta</span></h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label>Nome de Usuário</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: stretch;">
+                        <input type="text" id="register-username" required placeholder="ex: Joao123" maxlength="15">
+                        <button type="button" id="btn-check-username" class="btn-secondary" style="padding: 0 1.25rem; font-size: 0.8rem; flex-shrink: 0; border-radius: 5px;">Verificar</button>
+                    </div>
+                    <span id="username-status" style="font-size: 0.75rem; display: block; margin-top: 0.25rem;"></span>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="register-email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="register-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; height: 55px; font-size: 1rem;">Criar Conta</button>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                    Já tem uma conta? <a href="#" id="link-show-login" style="color: var(--primary); font-weight: 700;">FAÇA LOGIN</a>
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        async function initialize() {
+            try {
+                await auth.init();
+            } finally {
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('fade-out');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>
