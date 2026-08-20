@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMapping - Sistema de Gestão Geográfica</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --success: #34a853;
+            --dark: #202124;
+            --light-gray: #f1f3f4;
+            --border: #dadce0;
+            --sidebar-width: 380px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fff;
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            height: 64px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            background: #fff;
+            justify-content: space-between;
+            z-index: 1001;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        #map {
+            flex: 1;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #5f6368;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .input-box {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"], input[type="number"], input[type="file"] {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            line-height: 20px;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        button.success {
+            background: var(--success);
+        }
+
+        button.success:hover {
+            background: #2d8a47;
+        }
+
+        .result-card {
+            background: var(--light-gray);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .points-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .points-table th, .points-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .points-container {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        EcoMapping
+    </div>
+    <div style="font-size: 14px; font-weight: 500; color: #5f6368;">
+        EcoMapping &bull; Gestão Ambiental
+    </div>
+</header>
+
+<div class="main-container">
+    <div class="sidebar">
+        <div class="section">
+            <div class="section-title">Localização</div>
+            <div class="input-box">
+                <label for="searchInput">Pesquisar Região</label>
+                <input type="text" id="searchInput" placeholder="País, Cidade ou Bairro">
+                <button onclick="searchRegion()">Buscar Área</button>
+            </div>
+            <div class="input-box">
+                <label for="fileInput">Carregar Personalizada</label>
+                <input type="file" id="fileInput" accept=".zip">
+                <div class="hint">Envie um Shapefile (.zip)</div>
+            </div>
+
+            <div id="regionResult" class="result-card" style="display: none;">
+                <div class="metric-label">Área Selecionada</div>
+                <div class="metric-value"><span id="regionArea">0</span> m²</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Pontos e Coordenadas</div>
+            <div class="input-box">
+                <div style="display: flex; gap: 8px;">
+                    <div style="flex: 1;">
+                        <label for="latInput">Latitude</label>
+                        <input type="number" id="latInput" placeholder="-23.55" step="any">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="lngInput">Longitude</label>
+                        <input type="number" id="lngInput" placeholder="-46.63" step="any">
+                    </div>
+                </div>
+                <button onclick="addPointManual()">Adicionar Ponto</button>
+                <div class="hint">Ou clique diretamente no mapa</div>
+            </div>
+
+            <div class="points-container">
+                <table class="points-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pointsBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="success" style="margin-top: 16px;" onclick="calculateHull()">Calcular Polígono Convexo</button>
+            <button style="background: #ea4335; margin-top: 8px;" onclick="clearAll()">Limpar Tudo</button>
+
+            <div id="hullResult" class="result-card" style="display: none;">
+                <div class="metric-label">Área do Polígono (MPC)</div>
+                <div class="metric-value"><span id="hullArea">0</span> m²</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
+
+<script>
+    // Inicialização do Mapa
+    const map = L.map('map').setView([-15.78, -47.93], 4);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const regionLayer = L.featureGroup().addTo(map);
+    const pointsLayer = L.featureGroup().addTo(map);
+    const hullLayer = L.featureGroup().addTo(map);
+
+    let points = [];
+    let regionGeoJSON = null;
+
+    // Busca de Região via Nominatim
+    async function searchRegion() {
+        const query = document.getElementById('searchInput').value;
+        if (!query) return;
+
+        const btn = event.target;
+        btn.innerText = 'Buscando...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&polygon_geojson=1&limit=1`);
+            const data = await res.json();
+
+            if (data && data.length > 0) {
+                const item = data[0];
+                regionGeoJSON = item.geojson;
+
+                regionLayer.clearLayers();
+                const layer = L.geoJSON(regionGeoJSON, {
+                    style: {
+                        color: '#1a73e8',
+                        weight: 2,
+                        fillOpacity: 0.1
+                    }
+                }).addTo(regionLayer);
+
+                map.fitBounds(layer.getBounds());
+
+                const area = turf.area(regionGeoJSON);
+                document.getElementById('regionArea').innerText = area.toLocaleString('pt-BR');
+                document.getElementById('regionResult').style.display = 'block';
+            } else {
+                alert('Nenhuma região encontrada.');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Erro na busca.');
+        } finally {
+            btn.innerText = 'Buscar Área';
+            btn.disabled = false;
+        }
+    }
+
+    // Upload de Shapefile
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        const label = document.querySelector('label[for="fileInput"]');
+        const originalText = label.innerText;
+        label.innerText = 'Processando...';
+
+        reader.onload = async function() {
+            try {
+                const geojson = await shp(reader.result);
+                regionGeoJSON = geojson;
+
+                regionLayer.clearLayers();
+                const layer = L.geoJSON(geojson, {
+                    style: { color: '#1a73e8', weight: 2, fillOpacity: 0.1 }
+                }).addTo(regionLayer);
+
+                map.fitBounds(layer.getBounds());
+                const area = turf.area(geojson);
+                document.getElementById('regionArea').innerText = area.toLocaleString('pt-BR');
+                document.getElementById('regionResult').style.display = 'block';
+            } catch (err) {
+                alert('Erro ao ler Shapefile. Envie o .zip contendo os arquivos.');
+            } finally {
+                label.innerText = originalText;
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    // Adição de Pontos
+    map.on('click', function(e) {
+        addPoint(e.latlng.lat, e.latlng.lng);
+    });
+
+    function addPointManual() {
+        const lat = parseFloat(document.getElementById('latInput').value);
+        const lng = parseFloat(document.getElementById('lngInput').value);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            addPoint(lat, lng);
+            document.getElementById('latInput').value = '';
+            document.getElementById('lngInput').value = '';
+        }
+    }
+
+    function addPoint(lat, lng) {
+        points.push([lng, lat]); // Turf: [lng, lat]
+        L.circleMarker([lat, lng], {
+            radius: 6,
+            fillColor: "#ea4335",
+            color: "#fff",
+            weight: 2,
+            fillOpacity: 1
+        }).addTo(pointsLayer);
+        updatePointsTable();
+    }
+
+    function updatePointsTable() {
+        const tbody = document.getElementById('pointsBody');
+        tbody.innerHTML = '';
+        points.forEach((p, i) => {
+            const row = `<tr>
+                <td>${i + 1}</td>
+                <td>${p[1].toFixed(5)}</td>
+                <td>${p[0].toFixed(5)}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // Cálculo do Mínimo Polígono Convexo (MPC)
+    function calculateHull() {
+        if (points.length < 3) {
+            alert('São necessários pelo menos 3 pontos.');
+            return;
+        }
+
+        const featureCollection = turf.featureCollection(points.map(p => turf.point(p)));
+        const hull = turf.convex(featureCollection);
+
+        if (hull) {
+            hullLayer.clearLayers();
+            L.geoJSON(hull, {
+                style: {
+                    color: '#34a853',
+                    weight: 3,
+                    fillOpacity: 0.3,
+                    dashArray: '5, 5'
+                }
+            }).addTo(hullLayer);
+
+            const area = turf.area(hull);
+            document.getElementById('hullArea').innerText = area.toLocaleString('pt-BR');
+            document.getElementById('hullResult').style.display = 'block';
+        } else {
+            alert('Não foi possível formar um polígono convexo.');
+        }
+    }
+
+    function clearAll() {
+        points = [];
+        regionGeoJSON = null;
+        regionLayer.clearLayers();
+        pointsLayer.clearLayers();
+        hullLayer.clearLayers();
+        document.getElementById('pointsBody').innerHTML = '';
+        document.getElementById('regionResult').style.display = 'none';
+        document.getElementById('hullResult').style.display = 'none';
+        document.getElementById('searchInput').value = '';
+        document.getElementById('fileInput').value = '';
+    }
+</script>
+
+</body>
+</html>
